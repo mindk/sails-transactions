@@ -1,0 +1,17 @@
+{
+  "name": "sails-transactions",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Native db transactions support for Sails.js v1",
+  "keywords": [],
+  "dependencies": {
+    "pg": "latest",
+    "mysql": "latest",
+    "lodash": "latest"
+  },
+  "sails": {
+    "isHook": true
+  },
+  "main": "index.js",
+  "author": "Ivan Zarudnyi"
+}
