@@ -1,10 +1,10 @@
-var pool = require('./lib/pool');
+var poolModule = require('./lib/pool');
 var transactionService = require('./lib/transaction');
 var _ = require('lodash');
 var adapterMethodsToWrap = ['create', 'createEach', 'find', 'update', 'destroy', 'join', 'avg', 'sum', 'count'];
 var supportedAdapters = [];
 
-function wrapAdapterMethods(adapter) {
+function wrapAdapterMethods(adapter, pool) {
     adapterMethodsToWrap.forEach(method => {
         if (_.isFunction(adapter[method])) {
             var old = adapter[method];
@@ -46,16 +46,20 @@ module.exports = function sailsTransactions(sails) {
     sails.on('ready', () => {
         _.forOwn(sails.adapters, (adapter, name) => {
             if (name === 'sails-postgresql' && adapter.adapterApiVersion >= 1) {
-                supportedAdapters.push(name);
+                var supported = 'pg';
+            } else if (name === 'sails-mysql' && adapter.adapterApiVersion >= 1) {
+                supported = 'mysql';
+            }
+
+            if (supported){
                 var conf = getDataStoreConf(adapter);
                 if (conf) {
-                    conf.pg = true;
-                    if (conf.url) {
-                        conf.connectionString = conf.url;
-                    }
-                    pool = pool(conf);
+                    supportedAdapters.push(name);
+                    conf[supported] = true;
+
+                    var pool = poolModule(conf);
                     sails.services.transaction = transactionService(pool);
-                    wrapAdapterMethods(adapter);
+                    wrapAdapterMethods(adapter, pool);
                 } else {
                     sails.log.error(`sails-transactions hook failed to load. Cannot locate DB connection config for adapter ${name}.`);
                 }
