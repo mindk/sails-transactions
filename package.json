@@ -1,13 +1,13 @@
 {
   "name": "sails-transactions",
-  "private": true,
+  "private": false,
   "version": "0.0.1",
   "description": "Native db transactions support for Sails.js v1",
-  "keywords": [],
+  "keywords": ["sails", "transaction"],
   "dependencies": {
-    "pg": "latest",
-    "mysql": "latest",
-    "lodash": "latest"
+    "pg": "7.3.0",
+    "mysql": "2.15.0",
+    "lodash": "4.17.4"
   },
   "sails": {
     "isHook": true

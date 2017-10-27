@@ -44,7 +44,11 @@ function getDataStoreConf(adapter) {
 module.exports = function sailsTransactions(sails) {
 
     sails.on('ready', () => {
+        var adapterSelected = false;
         _.forOwn(sails.adapters, (adapter, name) => {
+            if (adapterSelected) {
+                return;
+            }
             if (name === 'sails-postgresql' && adapter.adapterApiVersion >= 1) {
                 var supported = 'pg';
             } else if (name === 'sails-mysql' && adapter.adapterApiVersion >= 1) {
@@ -60,14 +64,18 @@ module.exports = function sailsTransactions(sails) {
                     var pool = poolModule(conf);
                     sails.services.transaction = transactionService(pool);
                     wrapAdapterMethods(adapter, pool);
+                    adapterSelected = name;
                 } else {
                     sails.log.error(`sails-transactions hook failed to load. Cannot locate DB connection config for adapter ${name}.`);
                 }
-            } else {
-                sails.log.warn(`sails-transactions: unsupported adapter ${name} ${adapter.adapterApiVersion}. 
-                Supported adapters is sails-postgresql ^1`);
             }
         });
+        if (!adapterSelected) {
+            sails.log.warn(`sails-transactions: cant find appropriate adapter. 
+                Supported adapters are sails-postgresql ^1, sails-mysql ^1`);
+        } else {
+            sails.log.info(`sails-transaction service working on ${adapterSelected} adapter.`);
+        }
     });
     return {};
 };
