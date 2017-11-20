@@ -9,7 +9,7 @@ Module exposed as sails.services.transaction
 
     sails.services.transaction.startTransaction(callback) - creates context and starts transction
     sails.services.transaction.commitTransaction(callback) - commites transaction
-    sails.services.transaction.commitTransaction(callback) - rollbacks transaction
+    sails.services.transaction.rollbackTransaction(callback) - rollbacks transaction
 	sails.services.transaction.getTransactionContext() - gets transaction context with transaction ID. Store any session data here
 	
 ### Hint ###
