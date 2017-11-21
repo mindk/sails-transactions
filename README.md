@@ -1,7 +1,7 @@
 ### Overview ###
 
 Sails extension for RDBMS transactions based on Domains API. 
-Currently supported Sails v.^1, MySQL and PostgreSQL.
+Currently supported Sails v.^1, MySQL, and PostgreSQL.
 
 ### Usage ###
 
@@ -18,8 +18,8 @@ Start transaction can be placed to http middleware so each user request will be 
 ### Details ###
 
 All promises and async code invoked in startTransaction callback will have the same context with its own transaction ID. All queries and ORM methods from Waterline models will go thru the same connection according to transaction ID from context.
-Module uses its own pool. Default poolsize is 300, this value can be changed by sailsTransactionsPoolSize property in adapter config.
+The module uses its own pool. Default pool size is 300, this value can be changed by sailsTransactionsPoolSize property in adapter config.
 
 ### Warning ###
 
-Domain support for native promises implemented in node 8. May work unstable with deffered module. 
+Domain support for native promises implemented in node 8. May work unstable with the deffered module. 
