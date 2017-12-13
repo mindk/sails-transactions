@@ -3,6 +3,8 @@
 Sails extension for RDBMS transactions based on Domains API. 
 Currently supported Sails v.^1, MySQL, and PostgreSQL.
 
+Existing Sails adapters does not support transactions for the whole request or async code chain. Current implementation forces you to keep transaction or connection object. This module provides simple API to wrap any part of application code into transaction without significant changes. 
+
 ### Usage ###
 
 Module exposed as sails.services.transaction
